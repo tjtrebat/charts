@@ -20,8 +20,12 @@ class Chart:
         self.root = root
         self.root.title("Charts")
         self.items = []
-        self.canvas = Canvas(self.root)
-        self.canvas.pack()
+        self.notebook = Notebook()
+        self.bar_chart = Canvas(self.root)
+        self.pie_chart = Canvas(self.root)
+        self.notebook.add(self.bar_chart, text="Bar Chart")
+        self.notebook.add(self.pie_chart, text="Pie Chart")
+        self.notebook.pack(expand='yes', fill='both')
         self.add_menu()
 
     def new_item(self):
@@ -53,9 +57,11 @@ class Chart:
     def add_item(self, event):
         item = Item(int(self.length.get()), self.label.get(), self.color.get())
         self.items.append(item)
-        self.canvas.create_rectangle(10, 10 + 30 * len(self.items), 4 * (10 + item.length),
+        self.bar_chart.create_rectangle(10, 10 + 30 * len(self.items), 4 * (10 + item.length),
                                      20 + 30 * len(self.items), fill=item.color)
-        self.canvas.create_text(10, 30 * len(self.items), text=item.label, anchor="w")
+        self.bar_chart.create_text(10, 30 * len(self.items), text=item.label, anchor="w")
+        xy = 20, 20, 300, 300
+        self.pie_chart.create_arc(xy, start=0, extent=270, fill=item.color)
         event.widget.master.destroy()
 
     def add_menu(self):
