@@ -44,7 +44,7 @@ class Chart:
         self.color.set("white")
         lbl_color = Label(self.top_level, text="Color", style="BW.TLabel")
         lbl_color.grid(row=2, column=0)
-        OptionMenu(self.top_level, self.color, "white", "black", "red",
+        OptionMenu(self.top_level, self.color, "", "white", "black", "red",
                    "orange", "yellow", "green", "blue", "purple").grid(row=2, column=1, sticky="w")
         add_button = Button(self.top_level, text="Add")
         add_button.bind("<Button-1>", self.add_item)
