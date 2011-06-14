@@ -9,9 +9,6 @@ class Item:
         self.label = label
         self.color = color
 
-    def get_extent(self):
-        return int((18 / 5) * self.length)
-
     def __str__(self):
         s = str(self.length) + "\n"
         s += self.label + "\n"
@@ -58,19 +55,25 @@ class Chart:
         add_button.grid(row=3, column=1, pady=10)
 
     def add_item(self, event):
+        # add item to bar chart
         item = Item(int(self.length.get()), self.label.get(), self.color.get())
         self.bar_chart.create_rectangle(10, 20 + 30 * len(self.items), 4 * (10 + item.length),
                                      30 + 30 * len(self.items), fill=item.color)
         self.bar_chart.create_text(10, 10 + 30 * len(self.items), text=item.label, anchor="w")
+        self.items.append(item)
+        # add item to pie chart
+        self.pie_chart.delete(ALL)
         xy = 90, 20, 370, 300
-        start = sum([i.get_extent() for i in self.items])
-        extent = item.get_extent()
-        print(str(start) + " " + str(extent))
-        if extent == 360:
+        if len(self.items) <= 1:
             self.pie_chart.create_oval(xy, fill=item.color)
         else:
-            self.pie_chart.create_arc(xy, start=start, extent=extent, fill=item.color)
-        self.items.append(item)
+            total_length = sum([i.length for i in self.items])
+            start = 0
+            for i in self.items:
+                extent = round((360 / total_length) * i.length)
+                print(str(start) + " " + str(extent))
+                self.pie_chart.create_arc(xy, start=start, extent=extent, fill=i.color)
+                start += extent
         event.widget.master.destroy()
 
     def add_menu(self):
