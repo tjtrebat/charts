@@ -9,6 +9,9 @@ class Item:
         self.label = label
         self.color = color
 
+    def get_extent(self):
+        return int((18 / 5) * self.length)
+
     def __str__(self):
         s = str(self.length) + "\n"
         s += self.label + "\n"
@@ -22,7 +25,7 @@ class Chart:
         self.items = []
         self.notebook = Notebook()
         self.bar_chart = Canvas(self.root)
-        self.pie_chart = Canvas(self.root)
+        self.pie_chart = Canvas(self.root, width=450, height=350)
         self.notebook.add(self.bar_chart, text="Bar Chart")
         self.notebook.add(self.pie_chart, text="Pie Chart")
         self.notebook.pack(expand='yes', fill='both')
@@ -56,12 +59,18 @@ class Chart:
 
     def add_item(self, event):
         item = Item(int(self.length.get()), self.label.get(), self.color.get())
+        self.bar_chart.create_rectangle(10, 20 + 30 * len(self.items), 4 * (10 + item.length),
+                                     30 + 30 * len(self.items), fill=item.color)
+        self.bar_chart.create_text(10, 10 + 30 * len(self.items), text=item.label, anchor="w")
+        xy = 90, 20, 370, 300
+        start = sum([i.get_extent() for i in self.items])
+        extent = item.get_extent()
+        print(str(start) + " " + str(extent))
+        if extent == 360:
+            self.pie_chart.create_oval(xy, fill=item.color)
+        else:
+            self.pie_chart.create_arc(xy, start=start, extent=extent, fill=item.color)
         self.items.append(item)
-        self.bar_chart.create_rectangle(10, 10 + 30 * len(self.items), 4 * (10 + item.length),
-                                     20 + 30 * len(self.items), fill=item.color)
-        self.bar_chart.create_text(10, 30 * len(self.items), text=item.label, anchor="w")
-        xy = 20, 20, 300, 300
-        self.pie_chart.create_arc(xy, start=0, extent=270, fill=item.color)
         event.widget.master.destroy()
 
     def add_menu(self):
