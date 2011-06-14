@@ -71,18 +71,17 @@ class Chart:
             start = 0
             for i in self.items:
                 extent = round((360 / total_length) * i.length)
-                print(str(start) + " " + str(extent))
                 self.pie_chart.create_arc(xy, start=start, extent=extent, fill=i.color)
                 start += extent
         event.widget.master.destroy()
 
     def add_menu(self):
         menu = Menu(self.root)
-        self.file_menu = Menu(menu, tearoff=0)
-        self.file_menu.add_command(label="Add Item", command=self.new_item)
-        self.file_menu.add_separator()
-        self.file_menu.add_command(label="Exit", command=quit)
-        menu.add_cascade(label="File", menu=self.file_menu)
+        file_menu = Menu(menu, tearoff=0)
+        file_menu.add_command(label="Add Item", command=self.new_item)
+        file_menu.add_separator()
+        file_menu.add_command(label="Exit", command=quit)
+        menu.add_cascade(label="File", menu=file_menu)
         self.root.config(menu=menu)
 
 if __name__ == "__main__":
