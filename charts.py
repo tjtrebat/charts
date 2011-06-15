@@ -26,26 +26,28 @@ class Chart:
         self.notebook.add(self.bar_chart, text="Bar Chart")
         self.notebook.add(self.pie_chart, text="Pie Chart")
         self.notebook.pack(expand='yes', fill='both')
+        self.top_level = None
+        self.length = None
+        self.label = StringVar()
+        self.color = StringVar()
+        self.color.set("white")
         self.add_menu()
 
     def new_item(self):
-        if hasattr(self, "top_level") and self.top_level.winfo_exists():
+        if self.top_level is not None and self.top_level.winfo_exists():
             self.top_level.focus()
         else:
             self.top_level = Toplevel(self.root, padx=10, pady=10)
-        self.top_level.title("Add Item")
+            self.top_level.title("Add Item")
         style = Style()
         style.configure("BW.TLabel", padx=20)
         lbl_length = Label(self.top_level, text="Length", style="BW.TLabel")
         lbl_length.grid(row=0, column=0)
         self.length = Spinbox(self.top_level, from_=0, to=100, width=4)
         self.length.grid(row=0, column=1, sticky="w")
-        self.label = StringVar()
         lbl_label = Label(self.top_level, text="Label", style="BW.TLabel")
         lbl_label.grid(row=1, column=0)
         Entry(self.top_level, textvariable=self.label).grid(row=1, column=1)
-        self.color = StringVar()
-        self.color.set("white")
         lbl_color = Label(self.top_level, text="Color", style="BW.TLabel")
         lbl_color.grid(row=2, column=0)
         OptionMenu(self.top_level, self.color, "", "white", "black", "red",
