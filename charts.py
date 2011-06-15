@@ -50,11 +50,9 @@ class Chart:
         lbl_color.grid(row=2, column=0)
         OptionMenu(self.top_level, self.color, "", "white", "black", "red",
                    "orange", "yellow", "green", "blue", "purple").grid(row=2, column=1, sticky="w")
-        add_button = Button(self.top_level, text="Add")
-        add_button.bind("<Button-1>", self.add_item)
-        add_button.grid(row=3, column=1, pady=10)
+        Button(self.top_level, text="Add", command=self.add_item).grid(row=3, column=1, pady=10)
 
-    def add_item(self, event):
+    def add_item(self):
         # add item to bar chart
         item = Item(int(self.length.get()), self.label.get(), self.color.get())
         self.bar_chart.create_rectangle(10, 20 + 30 * len(self.items), 4 * (10 + item.length),
@@ -73,7 +71,7 @@ class Chart:
                 extent = round((360 / total_length) * i.length)
                 self.pie_chart.create_arc(xy, start=start, extent=extent, fill=i.color)
                 start += extent
-        event.widget.master.destroy()
+        self.top_level.destroy()
 
     def add_menu(self):
         menu = Menu(self.root)
